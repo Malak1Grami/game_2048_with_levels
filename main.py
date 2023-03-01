@@ -1,4 +1,5 @@
 # build 2048 in python using pygame!!
+import sys
 import pygame
 import random
 
@@ -6,21 +7,21 @@ pygame.init()
 
 
 # initial set up
-WIDTH = 400
-HEIGHT = 500
+WIDTH = 500
+HEIGHT = 670
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption('2048')
 
 # win image
 dance_win=pygame.image.load("images/3.png").convert_alpha()
 d_win=dance_win.get_rect()
-dance_win = pygame.transform.scale(dance_win, (150, 150))
+dance_win = pygame.transform.scale(dance_win, (250, 250))
 d_win.topleft = (100, 200)
 
 # lose image
 lose_img=pygame.image.load("images/1.png").convert_alpha()
 l_img=lose_img.get_rect()
-lose_img = pygame.transform.scale(lose_img, (150, 170))
+lose_img = pygame.transform.scale(lose_img, (250, 250))
 l_img.topleft = (110, 165)
 
 
@@ -58,25 +59,26 @@ high_score = 1000
 
 # draw game over and restart text
 def draw_over():
-    pygame.draw.rect(screen, 'black', [50, 50, 300, 300], 0, 10)
+    pygame.draw.rect(screen, 'black', [50, 50, 400, 450], 0, 10)
     # kober el moraba3 el ak7el eli  yo5rejli ki na5serrr
     game_over_text1 = font.render('Game Over!', True, 'white')
     game_over_text2 = font.render('Press Enter to Restart', True, 'white')
     # les msgs eli ijiyouni ki na5sar
-    screen.blit(game_over_text1, (130, 65))
-    screen.blit(game_over_text2, (70, 105))
+    screen.blit(game_over_text1, (200, 65))
+    screen.blit(game_over_text2, (170, 105))
     screen.blit(lose_img, l_img.topleft)
 
 
 def draw_win():
-    pygame.draw.rect(screen, 'white', [50, 50, 300, 300], 0, 10)
+    pygame.draw.rect(screen, 'white', [50, 50, 400, 450], 0, 10)
     game_win_text1 = font.render('You win!', True, 'black')
     game_win_text2 = font.render('Press Enter to ', True, 'black')
     game_win_text3 = font.render('pass to next level ', True, 'black')
-    screen.blit(game_win_text1, (130, 65))
-    screen.blit(game_win_text2, (110, 105))
-    screen.blit(game_win_text3, (110, 165))
+    screen.blit(game_win_text1, (200, 65))
+    screen.blit(game_win_text2, (160, 105))
+    screen.blit(game_win_text3, (120, 165))
     screen.blit(dance_win, d_win.topleft)
+ 
     
 def win_all_game():
     pygame.draw.rect(screen, 'white', [50, 50, 300, 300], 0, 10)
@@ -87,6 +89,7 @@ def win_all_game():
     screen.blit(game_win_text2, (110, 105))
 
     screen.blit(dance_win, d_win.topleft)
+ 
     
 
 # take your turn based on direction
@@ -186,72 +189,95 @@ def new_pieces(board):
 
 # draw background for the board
 def draw_board_lv1():
-    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
-    high_score_text = font.render(f'High Score: {1000}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 440))
+    high_score_text = font.render(f'High Score: {level1_score}', True, 'black')
+    screen.blit(score_text, (10, 510))
+    screen.blit(high_score_text, (10, 540))
     # screen.blit(levels_img, (10, 450))
     # screen.blit(pygame.transform.scale(pygame.image.load('images/levels.png'), (580, 120)), (0, 470))
-    timer_text = timer_font.render(f'Time 120 seconds:'  + str(level1_time / 1000 - timer_seconds), True, 'black' )
-    screen.blit(timer_text, (10, 470))
+    timer_text = font.render(f'Time with seconds: {level1_time/ 1000} '+ str(level1_time / 1000 - timer_seconds), True, 'black' )
+    screen.blit(timer_text, (10, 570))
+    # screen.fill('gray')
+    pygame.draw.rect(screen, "blue", restart_button)
+    screen.blit(restart_text, restart_text_rect)
+    # Draw the exit button onto the screen
+    pygame.draw.rect(screen, "red", exit_button)
+    screen.blit(exit_text, exit_text_rect)
+    
     pass
 
 def draw_board_lv2():
-    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {3000}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    screen.blit(score_text, (10, 510))
+    screen.blit(high_score_text, (10, 550))
     timer_text = timer_font.render(f'Time 300 seconds:'  + str(level2_time / 1000 - timer_seconds), True, 'black' )
-    screen.blit(timer_text, (10, 470))
+    screen.blit(timer_text, (10, 570))
+    pygame.draw.rect(screen, "blue", restart_button)
+    screen.blit(restart_text, restart_text_rect)
+    pygame.draw.rect(screen, "red", exit_button)
+    screen.blit(exit_text, exit_text_rect)
     pass
 
 
 def draw_board_lv3():
-    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {5000}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    screen.blit(score_text, (10, 510))
+    screen.blit(high_score_text, (10, 550))
     timer_text = timer_font.render(f'Time 700 seconds:'  + str(level3_time / 1000 - timer_seconds), True, 'black' )
-    screen.blit(timer_text, (10, 470))
+    screen.blit(timer_text, (10, 570))
+    pygame.draw.rect(screen, "blue", restart_button)
+    screen.blit(restart_text, restart_text_rect)
+    pygame.draw.rect(screen, "red", exit_button)
+    screen.blit(exit_text, exit_text_rect)
     
     pass
 
 def draw_board_lv4():
-    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {10000}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    screen.blit(score_text, (10, 510))
+    screen.blit(high_score_text, (10, 550))
     timer_text = timer_font.render(f'Time 1200 seconds:'  + str(level4_time / 1000 - timer_seconds), True, 'black' )
-    screen.blit(timer_text, (10, 470))
+    screen.blit(timer_text, (10, 570))
+    pygame.draw.rect(screen, "blue", restart_button)
+    screen.blit(restart_text, restart_text_rect)
+    pygame.draw.rect(screen, "red", exit_button)
+    screen.blit(exit_text, exit_text_rect)
     pass
 
 def draw_board_lv5():
-    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 400, 400], 0, 10)
+    pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {20000}', True, 'black')
-    screen.blit(score_text, (10, 410))
-    screen.blit(high_score_text, (10, 450))
+    screen.blit(score_text, (10, 510))
+    screen.blit(high_score_text, (10, 550))
     timer_text = timer_font.render(f'Time 2000 seconds :'  + str(level5_time / 1000 - timer_seconds), True, 'black' )
-    screen.blit(timer_text, (10, 470))
+    screen.blit(timer_text, (10, 570))
+    pygame.draw.rect(screen, "blue", restart_button)
+    screen.blit(restart_text, restart_text_rect)
+    pygame.draw.rect(screen, "red", exit_button)
+    screen.blit(exit_text, exit_text_rect)
     
     pass
 # dictionary for colors and images
 colors = {0: ((204, 192, 179), None),
-          2: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/20.png'), (75, 75))),
-          4: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/50.png'), (75, 75))),
-          8: ((242, 177, 121), pygame.transform.scale(pygame.image.load('images/100.png'), (75, 75))),
-          16: ((245, 149, 99),  pygame.transform.scale(pygame.image.load('images/200.png'), (75, 75))),
-          32: ((246, 124, 95),  pygame.transform.scale(pygame.image.load('images/500.png'), (75, 75))),
-          64: ((246, 94, 59),  pygame.transform.scale(pygame.image.load('images/1d.png'), (75, 75))),
-          128: ((237, 207, 114),  pygame.transform.scale(pygame.image.load('images/2d.png'), (75, 75))),
-          256: ((237, 204, 97),  pygame.transform.scale(pygame.image.load('images/5d.png'), (75, 75))),
-          512: ((237, 200, 80),  pygame.transform.scale(pygame.image.load('images/10d.jpg'), (75, 75))),
-          1024: ((237, 197, 63),  pygame.transform.scale(pygame.image.load('images/20d.jpg'), (75, 75))),
-          2048: ((237, 194, 46),  pygame.transform.scale(pygame.image.load('images/50d.jpg'), (75, 75))),
+          2: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/20.png'), (95, 95))),
+          4: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/50.png'), (95, 95))),
+          8: ((242, 177, 121), pygame.transform.scale(pygame.image.load('images/100.png'), (95, 95))),
+          16: ((245, 149, 99),  pygame.transform.scale(pygame.image.load('images/200.png'), (95, 95))),
+          32: ((246, 124, 95),  pygame.transform.scale(pygame.image.load('images/500.png'), (95, 95))),
+          64: ((246, 94, 59),  pygame.transform.scale(pygame.image.load('images/1d.png'), (95, 95))),
+          128: ((237, 207, 114),  pygame.transform.scale(pygame.image.load('images/2d.png'),(95, 95))),
+          256: ((237, 204, 97),  pygame.transform.scale(pygame.image.load('images/5d.png'),(95, 95))),
+          512: ((237, 200, 80),  pygame.transform.scale(pygame.image.load('images/10d.jpg'),(95, 95))),
+          1024: ((237, 197, 63),  pygame.transform.scale(pygame.image.load('images/20d.jpg'),(95, 95))),
+          2048: ((237, 194, 46),  pygame.transform.scale(pygame.image.load('images/50d.jpg'),(95, 95))),
           'light text': ((249, 246, 242), None),
           'dark text': ((119, 110, 101), None),
           'other': ((0, 0, 0), None),
@@ -268,7 +294,7 @@ def draw_pieces(board):
             color, img = colors[value]
             if img:
                 # create rect for tile
-                tile_rect = pygame.Rect(j * 95 + 20, i * 95 + 20, 75, 75)
+                tile_rect = pygame.Rect(j * 115 + 20, i * 115 + 20, 95, 95)
                 # create rect for image with max size equal to tile size
                 img_rect = img.get_rect()
                 img_rect.width = min(img_rect.width, tile_rect.width)
@@ -280,18 +306,18 @@ def draw_pieces(board):
                 pygame.draw.rect(screen, color, tile_rect, 0, 5)
                 screen.blit(img, img_rect)
             else:
-                pygame.draw.rect(screen, color, [j * 95 + 20, i * 95 + 20, 75, 75], 0, 5)
+                pygame.draw.rect(screen, color, [j * 115 + 20, i * 115 + 20, 95, 95], 0, 5)
                 if value > 0:
                     if value > 8:
                         value_color = colors['light text'][0]
                     else:
                         value_color = colors['dark text'][0]
                     value_len = len(str(value))
-                    font = pygame.font.Font('freesansbold.ttf', 48 - (5 * value_len))
+                    font = pygame.font.Font('freesansbold.ttf', 60 - (6 * value_len))
                     value_text = font.render(str(value), True, value_color)
-                    text_rect = value_text.get_rect(center=(j * 95 + 57, i * 95 + 57))
+                    text_rect = value_text.get_rect(center=(j * 115 + 67, i * 115 + 67))
                     screen.blit(value_text, text_rect)
-                    pygame.draw.rect(screen, 'black', [j * 95 + 20, i * 95 + 20, 75, 75], 2, 5)
+                    pygame.draw.rect(screen, 'black', [j * 115 + 20, i * 115 + 20, 95, 95], 2, 5)
 
 
 
@@ -331,21 +357,91 @@ level5_time = 2000000
 clock = pygame.time.Clock()
 
 
+# Create a smaller font
+font_small = pygame.font.SysFont('calibri', 20)
 
 
-# Main game loop
+
 run = True
 level = 1
 timer = 0 
 
+# BUTTON restart
+
+BUTTON_WIDTH = 100
+BUTTON_HEIGHT = 50
+BUTTON_MARGIN = 20
+BUTTON_POS_RESTART = (20,600)
+
+
+
+restart_button = pygame.Rect(BUTTON_POS_RESTART, (BUTTON_WIDTH, BUTTON_HEIGHT))
+restart_text = font_small.render("Restart", True, "white")
+restart_text_rect = restart_text.get_rect(center= restart_button.center)
+
+
+# boutton exit
+
+BUTTON_POS_EXIT = (WIDTH - BUTTON_WIDTH - BUTTON_MARGIN, HEIGHT - BUTTON_HEIGHT - BUTTON_MARGIN)
+exit_button = pygame.Rect(BUTTON_POS_EXIT, (BUTTON_WIDTH, BUTTON_HEIGHT))
+exit_text = font_small.render("Exit", True, "white")
+exit_text_rect = exit_text.get_rect(center= exit_button.center)
+
+
+
+game_started = False
+
 
 while run:
+    # Main game loop
+    
+
+    # Create a new window to prompt the user to start the game
+    if level == 1 and timer == 0:
+        
+        intro_text = font_small.render('1:Utilisez les touches fléchées pour déplacer ', True, 'white')
+        intro_text1 = font_small.render('les tuiles sur le plateau de jeu.', True, 'white')
+        intro_text2 = font_small.render('2:Combinez les tuiles de même valeur en les',True, 'white')
+        intro_text3 = font_small.render(' faisant glisser les unes sur les autres.',True, 'white' )
+        intro_text4 = font_small.render('3:Le jeu comporte cinq niveaux, et vous devez  ', True, 'white')
+        intro_text5 = font_small.render('atteindre un certain score dans un temps limité ', True, 'white')
+        intro_text6 = font_small.render('pour passer au niveau suivant(5). ',True, 'white')
+        intro_text7 = font_small.render('4:Pour recommencer le jeu ou passer ',True, 'white' )
+        intro_text8 = font_small.render('au niveau suivant,appuyez sur la touche"Entrée".',True, 'white' )
+        intro_text9 = font_small.render('Press Enter to start the game ', True, 'red')
+
+        # Combine all the text surfaces into a single surface
+        intro_surface = pygame.Surface((800, 600))
+        
+        intro_surface.blit(intro_text, (10, 50))
+        intro_surface.blit(intro_text1, (10, 100))
+        intro_surface.blit(intro_text2, (10, 150))
+        intro_surface.blit(intro_text3, (10, 200))
+        intro_surface.blit(intro_text4, (10, 250))
+        intro_surface.blit(intro_text5, (10, 300))
+        intro_surface.blit(intro_text6, (10, 350))
+        intro_surface.blit(intro_text7, (10, 400))
+        intro_surface.blit(intro_text8, (10, 450))
+        intro_surface.blit(intro_text9, (10, 500))
+
+        intro_rect = intro_surface.get_rect(center=(WIDTH , HEIGHT//2 ))
+
+        
+        # Blit the single surface to the screen
+        screen.blit(intro_surface, intro_rect)
+
+        pygame.display.flip()
+        # wait_for_key(pygame.K_RETURN)
+        if wait_for_key(pygame.K_RETURN):
+            timer = 0
+    
     # Update the clock object and get the time since the last call
     dt = clock.tick(fps)
     timer += dt
 
     # Convert the timer value to seconds
     timer_seconds = int(timer / 1000)
+
 
     # Check if the time limit for the current level has been reached
     if level == 1 and timer_seconds >= level1_time / 1000:
@@ -356,8 +452,10 @@ while run:
 
     screen.fill('gray')
 
+
+
     # Draw the timer text on the screen
-    timer_text = timer_font.render('Time: ' + str(level1_time / 1000 - timer_seconds), True, 'white')
+    timer_text = font.render('Time: ' + str(level1_time / 1000 - timer_seconds), True, 'white')
     screen.blit(timer_text, (10, 10))
 
     if level == 1:
@@ -447,6 +545,20 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse_pos = event.pos
+            if exit_button.collidepoint(mouse_pos):
+                pygame.quit()
+                sys.exit()
+            if restart_button.collidepoint(mouse_pos):
+                board_values = [[0 for _ in range(4)] for _ in range(4)]
+                spawn_new = True
+                direction = ''
+                game_over = False
+                win = False
+                level = 1
+                score=0
+                timer = 0.1 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
                 direction = 'UP'
@@ -488,7 +600,7 @@ while run:
                         # level == 1
 
                         
-
+ 
     pygame.display.flip()
 
 pygame.quit()
