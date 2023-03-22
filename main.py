@@ -1,10 +1,12 @@
-# build 2048 in python using pygame!!
+
 import sys
 import pygame
 import random
+import moviepy.editor as mp
 
 pygame.init()
 
+pygame.mixer.init()
 
 # initial set up
 WIDTH = 500
@@ -24,16 +26,14 @@ l_img=lose_img.get_rect()
 lose_img = pygame.transform.scale(lose_img, (250, 250))
 l_img.topleft = (110, 165)
 
+# Load music file
+pygame.mixer.music.load('musics/3 MINUTE TIMER WITH MUSIC.mp3')
 
-# levels_img=pygame.image.load("images/levels.png").convert_alpha()
-# lvl_img=levels_img.get_rect()
-# levels_img= pygame.transform.scale(levels_img, (450, 500))
-# lvl_img.topleft = (400, 405)
+# Play music
+pygame.mixer.music.play(-1) # -1 indicates infinite loop
 
 
-
-# el vitesse mta3 el morab3at 9adeh yab9a wa9et bech yt3ada
-timer = pygame.time.Clock()
+# timer = pygame.time.Clock()
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 24)
 
@@ -49,23 +49,72 @@ spawn_new = True
 init_count = 0
 direction = ''
 score = 0
-# file = open('high_score', 'r')
-# init_high = int(file.readline())
-# file.close()
+
 high_score = 1000
 
+
+
+
+
+timer_font = pygame.font.SysFont('arial', 30)
+
+level1_score = 1000
+# Set the initial time for level 1
+level1_time = 120000
+
+level2_score = 3000
+level2_time = 300000
+
+level3_score = 5000
+level3_time = 700000
+
+level4_score = 10000
+level4_time = 1200000
+
+level5_score = 200000
+level5_time = 2000000
+
+# Initialize the clock object
+clock = pygame.time.Clock()
+
+
+# Create a smaller font
+font_small = pygame.font.SysFont('calibri', 20)
+
+
+
+
+
+# BUTTON restart
+
+BUTTON_WIDTH = 100
+BUTTON_HEIGHT = 50
+BUTTON_MARGIN = 20
+BUTTON_POS_RESTART = (20,600)
+
+
+
+restart_button = pygame.Rect(BUTTON_POS_RESTART, (BUTTON_WIDTH, BUTTON_HEIGHT))
+restart_text = font_small.render("Restart", True, "white")
+restart_text_rect = restart_text.get_rect(center= restart_button.center)
+
+
+# boutton exit
+
+BUTTON_POS_EXIT = (WIDTH - BUTTON_WIDTH - BUTTON_MARGIN, HEIGHT - BUTTON_HEIGHT - BUTTON_MARGIN)
+exit_button = pygame.Rect(BUTTON_POS_EXIT, (BUTTON_WIDTH, BUTTON_HEIGHT))
+exit_text = font_small.render("Exit", True, "white")
+exit_text_rect = exit_text.get_rect(center= exit_button.center)
 
 # fonctions
 
 # draw game over and restart text
 def draw_over():
     pygame.draw.rect(screen, 'black', [50, 50, 400, 450], 0, 10)
-    # kober el moraba3 el ak7el eli  yo5rejli ki na5serrr
-    game_over_text1 = font.render('Game Over!', True, 'white')
+   
     game_over_text2 = font.render('Press Enter to Restart', True, 'white')
-    # les msgs eli ijiyouni ki na5sar
-    screen.blit(game_over_text1, (200, 65))
-    screen.blit(game_over_text2, (170, 105))
+
+    screen.blit(game_over_text2, (170, 120))
     screen.blit(lose_img, l_img.topleft)
 
 
@@ -189,13 +238,14 @@ def new_pieces(board):
 
 # draw background for the board
 def draw_board_lv1():
+    
+    
     pygame.draw.rect(screen, (187, 173, 160), [0, 0, 500, 500], 0, 10)
     score_text = font.render(f'Score: {score}', True, 'black')
     high_score_text = font.render(f'High Score: {level1_score}', True, 'black')
     screen.blit(score_text, (10, 510))
     screen.blit(high_score_text, (10, 540))
-    # screen.blit(levels_img, (10, 450))
-    # screen.blit(pygame.transform.scale(pygame.image.load('images/levels.png'), (580, 120)), (0, 470))
+    
     timer_text = font.render(f'Time with seconds: {level1_time/ 1000} '+ str(level1_time / 1000 - timer_seconds), True, 'black' )
     screen.blit(timer_text, (10, 570))
     # screen.fill('gray')
@@ -213,7 +263,7 @@ def draw_board_lv2():
     high_score_text = font.render(f'High Score: {3000}', True, 'black')
     screen.blit(score_text, (10, 510))
     screen.blit(high_score_text, (10, 550))
-    timer_text = timer_font.render(f'Time 300 seconds:'  + str(level2_time / 1000 - timer_seconds), True, 'black' )
+    timer_text = font.render(f'Time 300 seconds:'  + str(level2_time / 1000 - timer_seconds), True, 'black' )
     screen.blit(timer_text, (10, 570))
     pygame.draw.rect(screen, "blue", restart_button)
     screen.blit(restart_text, restart_text_rect)
@@ -228,7 +278,7 @@ def draw_board_lv3():
     high_score_text = font.render(f'High Score: {5000}', True, 'black')
     screen.blit(score_text, (10, 510))
     screen.blit(high_score_text, (10, 550))
-    timer_text = timer_font.render(f'Time 700 seconds:'  + str(level3_time / 1000 - timer_seconds), True, 'black' )
+    timer_text = font.render(f'Time 700 seconds:'  + str(level3_time / 1000 - timer_seconds), True, 'black' )
     screen.blit(timer_text, (10, 570))
     pygame.draw.rect(screen, "blue", restart_button)
     screen.blit(restart_text, restart_text_rect)
@@ -243,7 +293,7 @@ def draw_board_lv4():
     high_score_text = font.render(f'High Score: {10000}', True, 'black')
     screen.blit(score_text, (10, 510))
     screen.blit(high_score_text, (10, 550))
-    timer_text = timer_font.render(f'Time 1200 seconds:'  + str(level4_time / 1000 - timer_seconds), True, 'black' )
+    timer_text = font.render(f'Time 1200 seconds:'  + str(level4_time / 1000 - timer_seconds), True, 'black' )
     screen.blit(timer_text, (10, 570))
     pygame.draw.rect(screen, "blue", restart_button)
     screen.blit(restart_text, restart_text_rect)
@@ -267,17 +317,17 @@ def draw_board_lv5():
     pass
 # dictionary for colors and images
 colors = {0: ((204, 192, 179), None),
-          2: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/20.png'), (95, 95))),
-          4: ((237, 224, 200), pygame.transform.scale(pygame.image.load('images/50.png'), (95, 95))),
-          8: ((242, 177, 121), pygame.transform.scale(pygame.image.load('images/100.png'), (95, 95))),
-          16: ((245, 149, 99),  pygame.transform.scale(pygame.image.load('images/200.png'), (95, 95))),
-          32: ((246, 124, 95),  pygame.transform.scale(pygame.image.load('images/500.png'), (95, 95))),
-          64: ((246, 94, 59),  pygame.transform.scale(pygame.image.load('images/1d.png'), (95, 95))),
-          128: ((237, 207, 114),  pygame.transform.scale(pygame.image.load('images/2d.png'),(95, 95))),
-          256: ((237, 204, 97),  pygame.transform.scale(pygame.image.load('images/5d.png'),(95, 95))),
-          512: ((237, 200, 80),  pygame.transform.scale(pygame.image.load('images/10d.jpg'),(95, 95))),
-          1024: ((237, 197, 63),  pygame.transform.scale(pygame.image.load('images/20d.jpg'),(95, 95))),
-          2048: ((237, 194, 46),  pygame.transform.scale(pygame.image.load('images/50d.jpg'),(95, 95))),
+          2: ((204, 192, 179), pygame.transform.scale(pygame.image.load('images/20.png'), (95, 95))),
+          4: ((204, 192, 179), pygame.transform.scale(pygame.image.load('images/50.png'), (95, 95))),
+          8: ((204, 192, 179), pygame.transform.scale(pygame.image.load('images/100.png'), (95, 95))),
+          16: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/200.png'), (95, 95))),
+          32: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/500.png'), (95, 95))),
+          64: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/1d.png'), (95, 95))),
+          128: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/2d.png'),(95, 95))),
+          256: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/5d.png'),(95, 95))),
+          512: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/10.png'),(95, 95))),
+          1024: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/20d.png'),(95, 95))),
+          2048: ((204, 192, 179),  pygame.transform.scale(pygame.image.load('images/50d.png'),(95, 95))),
           'light text': ((249, 246, 242), None),
           'dark text': ((119, 110, 101), None),
           'other': ((0, 0, 0), None),
@@ -333,118 +383,50 @@ def wait_for_key(key):
             
 
 
-# main game loop
 
-timer_font = pygame.font.SysFont('arial', 30)
-
-level1_score = 100
-# Set the initial time for level 1
-level1_time = 120000
-
-level2_score = 300
-level2_time = 300000
-
-level3_score = 5000
-level3_time = 700000
-
-level4_score = 10000
-level4_time = 1200000
-
-level5_score = 200000
-level5_time = 2000000
-
-# Initialize the clock object
-clock = pygame.time.Clock()
-
-
-# Create a smaller font
-font_small = pygame.font.SysFont('calibri', 20)
-
+def home_page():
+    # Create a surface for the home page
+    home_surface = pygame.Surface((800, 700))
+    
+    # Load the background image and blit it onto the home page surface
+    
+    background_image = pygame.image.load('images/background (1).png')
+    home_surface.blit(background_image, (0, 0))
+    
+    # Add text to the home page surface
+    home_text = font.render('Welcome to My Game!', True, 'white')
+    home_rect = home_text.get_rect(center=(WIDTH/2, HEIGHT/2))
+    home_surface.blit(home_text, home_rect)
+    
+    # Blit the home page surface to the screen
+    screen.blit(home_surface, (0, 0))
+    pygame.display.flip()
+    
+    # Wait for the user to press a key to start the game
+    wait_for_key(pygame.K_RETURN)
 
 
 run = True
-level = 1
-timer = 0 
+level = 0
 
-# BUTTON restart
-
-BUTTON_WIDTH = 100
-BUTTON_HEIGHT = 50
-BUTTON_MARGIN = 20
-BUTTON_POS_RESTART = (20,600)
-
-
-
-restart_button = pygame.Rect(BUTTON_POS_RESTART, (BUTTON_WIDTH, BUTTON_HEIGHT))
-restart_text = font_small.render("Restart", True, "white")
-restart_text_rect = restart_text.get_rect(center= restart_button.center)
-
-
-# boutton exit
-
-BUTTON_POS_EXIT = (WIDTH - BUTTON_WIDTH - BUTTON_MARGIN, HEIGHT - BUTTON_HEIGHT - BUTTON_MARGIN)
-exit_button = pygame.Rect(BUTTON_POS_EXIT, (BUTTON_WIDTH, BUTTON_HEIGHT))
-exit_text = font_small.render("Exit", True, "white")
-exit_text_rect = exit_text.get_rect(center= exit_button.center)
-
-
-
-game_started = False
 
 
 while run:
-    # Main game loop
-    
-
     # Create a new window to prompt the user to start the game
-    if level == 1 and timer == 0:
-        
-        intro_text = font_small.render('1:Utilisez les touches fléchées pour déplacer ', True, 'white')
-        intro_text1 = font_small.render('les tuiles sur le plateau de jeu.', True, 'white')
-        intro_text2 = font_small.render('2:Combinez les tuiles de même valeur en les',True, 'white')
-        intro_text3 = font_small.render(' faisant glisser les unes sur les autres.',True, 'white' )
-        intro_text4 = font_small.render('3:Le jeu comporte cinq niveaux, et vous devez  ', True, 'white')
-        intro_text5 = font_small.render('atteindre un certain score dans un temps limité ', True, 'white')
-        intro_text6 = font_small.render('pour passer au niveau suivant(5). ',True, 'white')
-        intro_text7 = font_small.render('4:Pour recommencer le jeu ou passer ',True, 'white' )
-        intro_text8 = font_small.render('au niveau suivant,appuyez sur la touche"Entrée".',True, 'white' )
-        intro_text9 = font_small.render('Press Enter to start the game ', True, 'red')
-
-        # Combine all the text surfaces into a single surface
-        intro_surface = pygame.Surface((800, 600))
-        
-        intro_surface.blit(intro_text, (10, 50))
-        intro_surface.blit(intro_text1, (10, 100))
-        intro_surface.blit(intro_text2, (10, 150))
-        intro_surface.blit(intro_text3, (10, 200))
-        intro_surface.blit(intro_text4, (10, 250))
-        intro_surface.blit(intro_text5, (10, 300))
-        intro_surface.blit(intro_text6, (10, 350))
-        intro_surface.blit(intro_text7, (10, 400))
-        intro_surface.blit(intro_text8, (10, 450))
-        intro_surface.blit(intro_text9, (10, 500))
-
-        intro_rect = intro_surface.get_rect(center=(WIDTH , HEIGHT//2 ))
-
-        
-        # Blit the single surface to the screen
-        screen.blit(intro_surface, intro_rect)
-
-        pygame.display.flip()
-        # wait_for_key(pygame.K_RETURN)
-        if wait_for_key(pygame.K_RETURN):
-            timer = 0
-    
-    # Update the clock object and get the time since the last call
-    dt = clock.tick(fps)
-    timer += dt
+    if level ==0:
+        home_page()
+        timer = 0 
+        level = 1
+        continue
 
     # Convert the timer value to seconds
     timer_seconds = int(timer / 1000)
-
+    dt = clock.tick(fps)
+    timer += dt
 
     # Check if the time limit for the current level has been reached
     if level == 1 and timer_seconds >= level1_time / 1000:
+        
         draw_over()
         pygame.display.flip()
         wait_for_key(pygame.K_RETURN)
@@ -459,14 +441,18 @@ while run:
     screen.blit(timer_text, (10, 10))
 
     if level == 1:
+        
         if score >= level1_score and timer_seconds <= level1_time / 1000:
             draw_win()
             pygame.display.flip()
             wait_for_key(pygame.K_RETURN)
             level = 2
             timer = 0  # Reset the timer for the next level
+            
         draw_board_lv1()
         draw_pieces(board_values)
+
+
     elif level == 2:
         if score >= level2_score and timer_seconds <= level2_time / 1000:
             draw_win()
@@ -531,6 +517,7 @@ while run:
 
     if game_over:
         draw_over()
+
         pygame.display.flip()
         wait_for_key(pygame.K_RETURN)
         board_values = [[0 for _ in range(4)] for _ in range(4)]
@@ -541,6 +528,7 @@ while run:
         game_over = False
         win = False
         level = 1
+        
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -602,6 +590,7 @@ while run:
                         
  
     pygame.display.flip()
-
+# Stop music
+pygame.mixer.music.stop()
 pygame.quit()
 
